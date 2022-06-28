@@ -25,8 +25,11 @@ class FlowAnalyzer(SocketServer):
 
         while not self.go.is_set() and name in self.buffers:
 
+            print(len(self.buffers[name]))
+
             if self.ws is None:
                 self.go.wait(0.1)
+                continue
 
             # print(len(self.buffers[name]))
 
@@ -52,7 +55,7 @@ class FlowAnalyzer(SocketServer):
                 asyncio.set_event_loop(self.event_loop)
                 asyncio.get_event_loop().run_until_complete(self.ws.send_json(report))
 
-            time.sleep(0.5)
+            self.go.wait(0.5)
     
     async def connect(self, ws: WebSocket):
         await ws.accept()
