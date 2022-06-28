@@ -67,7 +67,11 @@ def dispackHTTP(pkgs:PacketList):
                 if len(each) == 0:
                     continue
                 tmp = each.split(b':')
-                dic[tmp[0]] = tmp[1]
+                try:
+                    dic[tmp[0].decode()] = tmp[1].decode()
+                except UnicodeDecodeError:
+                    dic[tmp[0].decode()] = tmp[1].hex()
+
                 
             HTTP_header_list.append(dic)
         except:
