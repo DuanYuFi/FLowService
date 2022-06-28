@@ -13,7 +13,7 @@ async def flow_analyzer(websocket: WebSocket):
     await flowAnalyzer.connect(websocket)
     
     try:
-        flowAnalyzer.run()
+        await flowAnalyzer.run()
     
     except WebSocketDisconnect:
         flowAnalyzer.ws = None

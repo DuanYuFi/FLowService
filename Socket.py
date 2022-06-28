@@ -25,13 +25,13 @@ class SocketServer():
 
         self.THRESHOLD = threshold
     
-    def run(self):
+    async def run(self):
 
         self.go.clear()
 
         while not self.go.is_set():
             try:
-                conn, addr = self.sock.accept()
+                conn, addr = await self.sock.accept()
                 name = conn.recv(1024).decode()
 
                 if name in self.buffers:
