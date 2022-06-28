@@ -6,6 +6,7 @@ from config.sniffer import LISTENING_PORT, LISTENING_HOST, PACKAGE_GROUP_NUM
 app = FastAPI()
 
 flowAnalyzer = FlowAnalyzer(LISTENING_HOST, LISTENING_PORT, threshold=PACKAGE_GROUP_NUM)
+flowAnalyzer.start()
 
 @app.websocket("/ws/v1/flow")
 async def flow_analyzer(websocket: WebSocket):
@@ -13,7 +14,8 @@ async def flow_analyzer(websocket: WebSocket):
     flowAnalyzer.connect(websocket)
     
     try:
-        await flowAnalyzer.run()
+        data = await websocket.receive_text()
+        print(data)
     
     except WebSocketDisconnect:
         flowAnalyzer.disconnect()

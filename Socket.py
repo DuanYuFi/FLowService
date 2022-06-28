@@ -4,11 +4,11 @@ import asyncio
 
 from scapy.all import *
 
-class SocketServer():
+class SocketServer(threading.Thread):
 
     def __init__(self, listen_addr, listen_port, max_conn=10, threshold=100):
 
-        # threading.Thread.__init__(self)
+        threading.Thread.__init__(self)
 
         self.listen_addr = listen_addr
         self.listen_port = listen_port
@@ -25,13 +25,13 @@ class SocketServer():
 
         self.THRESHOLD = threshold
     
-    async def run(self):
+    def run(self):
 
         self.go.clear()
 
         while not self.go.is_set():
             try:
-                conn, addr = await self.sock.accept()
+                conn, addr = self.sock.accept()
                 name = conn.recv(1024).decode()
 
                 if name in self.buffers:
