@@ -59,7 +59,7 @@ def dispackHTTP(pkgs:PacketList):
         data = data.split(b'\r\n')
         dic = {}
 
-        dic[b"method"] = data[0]
+        dic["method"] = data[0].decode()
         data = data[1:]
 
         try:
