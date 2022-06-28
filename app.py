@@ -13,7 +13,7 @@ async def flow_analyzer(websocket: WebSocket):
     await flowAnalyzer.connect(websocket)
     
     try:
-        await flowAnalyzer.run()
+        flowAnalyzer.run()
     
     except WebSocketDisconnect:
         flowAnalyzer.ws = None
@@ -22,6 +22,6 @@ async def flow_analyzer(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     from config.common import SERVICE_HOST, SERVICE_PORT
-    
+
     uvicorn.run(app, host=SERVICE_HOST, port=SERVICE_PORT)
 
