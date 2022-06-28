@@ -1,14 +1,14 @@
 import time
 from os import path, remove
 import json
+import asyncio
 
 from scapy.all import *
+from fastapi import WebSocket
 
 from utils.common import nowTimeStamp, dealTLSResult, dealHTTPResult
 from Socket import SocketServer
-
-FLOW_TMP_PATH = "tmp"
-FLOW_RESULT_PATH = "result"
+from config.sniffer import FLOW_TMP_PATH, FLOW_RESULT_PATH
 
 
 def get_ngrams(query):
@@ -22,6 +22,10 @@ def get_ngrams(query):
 class FlowAnalyzer(SocketServer):
     
     def handle_analyze(self, name):
+
+        if self.ws is None:
+            return
+
         while not self.go.is_set() and name in self.buffers:
 
             # print(len(self.buffers[name]))
@@ -41,11 +45,22 @@ class FlowAnalyzer(SocketServer):
                 remove(filename)
 
                 report = analyzer.getReport()
-                filename = path.join(FLOW_RESULT_PATH, f"{tag}.txt")
-                with open(filename, "w") as f:
-                    f.write(json.dumps(report))
+                # filename = path.join(FLOW_RESULT_PATH, f"{tag}.txt")
+                # with open(filename, "w") as f:
+                #     f.write(json.dumps(report))
+                report = {"client_name": name, "data": report}
+                asyncio.set_event_loop(self.event_loop)
+                asyncio.get_event_loop().run_until_complete(self.ws.send_json(report))
 
             time.sleep(0.5)
+    
+    async def connect(self, ws: WebSocket):
+        self.ws = ws
+        print("Connected.")
+
+    async def disconnect(self, ws: WebSocket):
+        print("Disconnected.")
+        self.ws = None
 
 
 from utils.ddos import DOSIdentifier

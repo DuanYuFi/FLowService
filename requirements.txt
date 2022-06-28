@@ -4,3 +4,5 @@ scapy
 sklearn
 tldextract
 joblib
+uvicorn
+fastapi

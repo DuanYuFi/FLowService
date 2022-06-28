@@ -16,3 +16,6 @@ TLS_MODEL_PATH = path.join(TLS_PATH,"model")
 
 HTTP_PATH = path.join("utils","HTTP")
 HTTP_MODEL_PATH = path.join(HTTP_PATH,"model")
+
+SERVICE_HOST = "0.0.0.0"
+SERVICE_PORT = 11110

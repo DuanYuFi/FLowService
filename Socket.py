@@ -1,5 +1,6 @@
 import socket
 import threading
+import asyncio
 
 from scapy.all import *
 
@@ -19,9 +20,12 @@ class SocketServer():
         self.go = threading.Event()
         self.go.clear()
 
+        self.ws = None
+        self.event_loop = asyncio.new_event_loop()
+
         self.THRESHOLD = threshold
     
-    def start(self):
+    def run(self):
 
         self.go.clear()
 
@@ -50,6 +54,10 @@ class SocketServer():
 
 
     def handle(self, data: bytes, name):
+
+        if self.ws is None:
+            return
+
         pkg = Ether(data)
         self.buffers[name].append(pkg)
 
