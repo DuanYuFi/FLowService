@@ -76,6 +76,10 @@ class SocketServer():
         self.buffers.pop(name)
         print("Disconnected by", addr)
     
+    def stop(self):
+        self.go.set()
+        self.sock.close()
+    
 
 
 class SocketClient:

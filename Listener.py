@@ -46,3 +46,24 @@ class FlowListener:
     
     def stop(self):
         self.conn.disconnect()
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("host", help="Listen address")
+    parser.add_argument("port", type=int, help="Listen port")
+    parser.add_argument("name", help="Name of this client")
+    parser.add_argument("-i", "--interface", type=str, nargs='+', help="Interface to listen on")
+
+    args = parser.parse_args()
+
+    listener = FlowListener(args.host, args.port, args.name, args.interface)
+    
+    try:
+        listener.run()
+    except KeyboardInterrupt:
+        listener.stop()
+        print("Disconnected")
+        exit(0)

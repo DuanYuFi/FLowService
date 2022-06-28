@@ -143,3 +143,23 @@ class PacketsAnalyzer:
 
     def appendReport(self, reportList):
         self.recordList += reportList
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("host", help="host of service")
+    parser.add_argument("port", help="port of service")
+    parser.add_argument("-m", "--max_conn", help="max connection", type=int)
+    parser.add_argument("-t", "--threshold", help="threshold of packet number to analyze", type=int)
+
+    args = parser.parse_args()
+
+    server = FlowAnalyzer(args.host, args.port, args.max_conn, args.threshold)
+    try:
+        server.start()
+    except KeyboardInterrupt:
+        server.stop()
+        print("Server stopped")
+        exit(0)
