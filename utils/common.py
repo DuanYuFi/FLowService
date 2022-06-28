@@ -7,6 +7,14 @@ import pathlib
 from config.common import TMP_HTTP_INPUT_PATH,TMP_HTTP_OUTPUT_PATH,TMP_TLS_OUTPUT_PATH,TMP_TLS_INPUT_PATH
 from config.sniffer import FLOW_TMP_PATH
 
+def get_ngrams(query):
+    tempQuery = str(query)
+    ngrams = []
+    for i in range(0,len(tempQuery)-3):
+        ngrams.append(tempQuery[i:i+3])
+    #print(ngrams)
+    return ngrams
+
 def nowTimeDate():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

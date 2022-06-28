@@ -10,6 +10,15 @@ from Socket import SocketServer
 FLOW_TMP_PATH = "tmp"
 FLOW_RESULT_PATH = "result"
 
+
+def get_ngrams(query):
+    tempQuery = str(query)
+    ngrams = []
+    for i in range(0,len(tempQuery)-3):
+        ngrams.append(tempQuery[i:i+3])
+    #print(ngrams)
+    return ngrams
+
 class FlowAnalyzer(SocketServer):
     
     def handle_analyze(self, name):
@@ -46,14 +55,6 @@ from utils.TLS.api.TLS_to_Csv import TlsAnalyzer
 from utils.TLS.api.TLS_predict import generate_TLS_csv
 from utils.HTTP.api.HTTP_to_Csv import HttpAnalyzer
 from utils.HTTP.api.HTTP_predict import select_HTTP_warning
-
-def get_ngrams(query):
-    tempQuery = str(query)
-    ngrams = []
-    for i in range(0,len(tempQuery)-3):
-        ngrams.append(tempQuery[i:i+3])
-    #print(ngrams)
-    return ngrams
 
 def analyzeDosPacketByFilename(filename: str) -> list:
     ddosI = DOSIdentifier(filename=filename)
