@@ -1,0 +1,3 @@
+,id,label,srcAddress,srcPort,destAddress,destPort,appProtocol
+0,046914cf-fb86-43f8-b667-269067753cc9,疑似恶意流量,192.168.0.67,1040,115.223.14.234,443,appProtocol
+3,589aa9c7-dd84-4fb0-8c18-2efc9499ec22,疑似恶意流量,192.168.0.67,1045,106.11.86.67,443,

@@ -1,0 +1,101 @@
+In [6]: analyzer.analyze()
+Dos analyze
+Arp analyze
+HTTP analyze
+/home/duanyufi/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator DecisionTreeClassifier from version 0.24.2 when using version 1.1.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/home/duanyufi/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator RandomForestClassifier from version 0.24.2 when using version 1.1.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+Input In [6], in <cell line: 1>()
+----> 1 analyzer.analyze()
+
+File ~/FlowService/Analyzer.py:131, in PacketsAnalyzer.analyze(self)
+    129 self.appendReport(analyzeARPPacketByFilename(self.pcapFilename))
+    130 print("HTTP analyze")
+--> 131 self.appendReport(analyzeHTTPPacketByFilename(self.pcapFilename))
+
+File ~/FlowService/Analyzer.py:111, in analyzeHTTPPacketByFilename(filename)
+    109 analyzer = HttpAnalyzer(input_path)
+    110 analyzer.save_csv(output_path)
+--> 111 result = select_HTTP_warning(output_path)
+    112 # print("= " * 10 + "HTTP")
+    113 # print(result)
+    114 response_data = dealHTTPResult(result, HTTP_pkgs)
+
+File ~/FlowService/utils/HTTP/api/HTTP_predict.py:72, in select_HTTP_warning(path)
+     71 def select_HTTP_warning(path='../test/http.csv'):
+---> 72     data = HTTP_predict_func_1(path)
+     73     #print(data)
+     74     data = data[data['TF_list'] == 1]
+
+File ~/FlowService/utils/HTTP/api/HTTP_predict.py:31, in HTTP_predict_func_1(file_path)
+     29     parameters_results[i] = [0]          # 正常的
+     30 else:
+---> 31     each_result,each_predic = HTTP_predict_func(parameters[i])
+     32     #print(each_predic)
+     33     each_result = list(set(each_result))
+
+File ~/FlowService/utils/HTTP/api/HTTP_predict.py:96, in HTTP_predict_func(data)
+     93 rfc = joblib.load(join(HTTP_MODEL_PATH, "model.pkl"))  # 模型
+     95 test_query = data
+---> 96 test1 = dp.Transform_single(test_query)
+     97 result1 = rfc.predict(test1)
+     98 results_2 = rfc.predict_proba(test1)
+
+File ~/FlowService/utils/HTTP/api/dataprocessing.py:44, in Transform_single(data)
+     43 def Transform_single(data):
+---> 44     vectorizer1 = joblib.load(join(HTTP_MODEL_PATH, "vectorizer.pkl"))
+     45     X= vectorizer1.transform(data)
+     46     return X
+
+File ~/.local/lib/python3.8/site-packages/joblib/numpy_pickle.py:587, in load(filename, mmap_mode)
+    581             if isinstance(fobj, str):
+    582                 # if the returned file object is a string, this means we
+    583                 # try to load a pickle file generated with an version of
+    584                 # Joblib so we load it with joblib compatibility function.
+    585                 return load_compatibility(fobj)
+--> 587             obj = _unpickle(fobj, filename, mmap_mode)
+    588 return obj
+
+File ~/.local/lib/python3.8/site-packages/joblib/numpy_pickle.py:506, in _unpickle(fobj, filename, mmap_mode)
+    504 obj = None
+    505 try:
+--> 506     obj = unpickler.load()
+    507     if unpickler.compat_mode:
+    508         warnings.warn("The file '%s' has been generated with a "
+    509                       "joblib version less than 0.10. "
+    510                       "Please regenerate this pickle file."
+    511                       % filename,
+    512                       DeprecationWarning, stacklevel=3)
+
+File /usr/lib/python3.8/pickle.py:1210, in _Unpickler.load(self)
+   1208             raise EOFError
+   1209         assert isinstance(key, bytes_types)
+-> 1210         dispatch[key[0]](self)
+   1211 except _Stop as stopinst:
+   1212     return stopinst.value
+
+File /usr/lib/python3.8/pickle.py:1535, in _Unpickler.load_stack_global(self)
+   1533 if type(name) is not str or type(module) is not str:
+   1534     raise UnpicklingError("STACK_GLOBAL requires str")
+-> 1535 self.append(self.find_class(module, name))
+
+File /usr/lib/python3.8/pickle.py:1579, in _Unpickler.find_class(self, module, name)
+   1577 __import__(module, level=0)
+   1578 if self.proto >= 4:
+-> 1579     return _getattribute(sys.modules[module], name)[0]
+   1580 else:
+   1581     return getattr(sys.modules[module], name)
+
+File /usr/lib/python3.8/pickle.py:331, in _getattribute(obj, name)
+    329         obj = getattr(obj, subpath)
+    330     except AttributeError:
+--> 331         raise AttributeError("Can't get attribute {!r} on {!r}"
+    332                              .format(name, obj)) from None
+    333 return obj, parent
+
+AttributeError: Can't get attribute 'get_ngrams' on <module '__main__'>
