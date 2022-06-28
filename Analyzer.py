@@ -54,11 +54,11 @@ class FlowAnalyzer(SocketServer):
 
             time.sleep(0.5)
     
-    async def connect(self, ws: WebSocket):
+    def connect(self, ws: WebSocket):
         self.ws = ws
         print("Connected.")
 
-    async def disconnect(self, ws: WebSocket):
+    def disconnect(self):
         print("Disconnected.")
         self.ws = None
 

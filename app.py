@@ -10,13 +10,13 @@ flowAnalyzer = FlowAnalyzer(LISTENING_HOST, LISTENING_PORT, threshold=PACKAGE_GR
 @app.websocket("/ws/v1/flow")
 async def flow_analyzer(websocket: WebSocket):
     
-    await flowAnalyzer.connect(websocket)
+    flowAnalyzer.connect(websocket)
     
     try:
         await flowAnalyzer.run()
     
     except WebSocketDisconnect:
-        flowAnalyzer.ws = None
+        flowAnalyzer.disconnect()
 
 
 if __name__ == "__main__":
