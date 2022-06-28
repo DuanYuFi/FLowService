@@ -34,26 +34,30 @@ class FlowAnalyzer(SocketServer):
             # print(len(self.buffers[name]))
 
             if len(self.buffers[name]) > self.THRESHOLD:
-                pkgs = self.buffers[name][:self.THRESHOLD]
-                self.buffers[name] = self.buffers[name][self.THRESHOLD:]
+                try:
+                    pkgs = self.buffers[name][:self.THRESHOLD]
+                    self.buffers[name] = self.buffers[name][self.THRESHOLD:]
 
-                tag = f"flow-{name}-{nowTimeStamp()}"
-                filename = path.join(FLOW_TMP_PATH, f"{tag}.pcap")
+                    tag = f"flow-{name}-{nowTimeStamp()}"
+                    filename = path.join(FLOW_TMP_PATH, f"{tag}.pcap")
 
-                print("Analyzing", filename)
+                    print("Analyzing", filename)
 
-                wrpcap(filename, pkgs)
-                analyzer = PacketsAnalyzer(filename)
-                analyzer.analyze()
-                remove(filename)
+                    wrpcap(filename, pkgs)
+                    analyzer = PacketsAnalyzer(filename)
+                    analyzer.analyze()
+                    remove(filename)
 
-                report = analyzer.getReport()
-                # filename = path.join(FLOW_RESULT_PATH, f"{tag}.txt")
-                # with open(filename, "w") as f:
-                #     f.write(json.dumps(report))
-                report = {"client_name": name, "data": report}
-                asyncio.set_event_loop(self.event_loop)
-                asyncio.get_event_loop().run_until_complete(self.ws.send_json(report))
+                    report = analyzer.getReport()
+                    # filename = path.join(FLOW_RESULT_PATH, f"{tag}.txt")
+                    # with open(filename, "w") as f:
+                    #     f.write(json.dumps(report))
+                    report = {"client_name": name, "data": report}
+                    asyncio.set_event_loop(self.event_loop)
+                    asyncio.get_event_loop().run_until_complete(self.ws.send_json(report))
+                except Exception as e:
+                    e.with_traceback()
+                    print(e)
 
             self.go.wait(0.5)
     
