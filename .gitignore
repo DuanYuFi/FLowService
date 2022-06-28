@@ -1,1 +1,6 @@
 *.pcap
+tmp/*.pcap
+tmp/HTTP/input/*.pcap
+tmp/HTTP/output/*.csv
+tmp/TLS/input/*.pcap
+tmp/TLS/output/*.csv
