@@ -23,10 +23,10 @@ class FlowAnalyzer(SocketServer):
     
     def handle_analyze(self, name):
 
-        if self.ws is None:
-            return
-
         while not self.go.is_set() and name in self.buffers:
+
+            if self.ws is None:
+                self.go.wait(0.1)
 
             # print(len(self.buffers[name]))
 
