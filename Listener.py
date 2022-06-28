@@ -33,10 +33,10 @@ class FlowListener:
         sport = None if TCP not in pkg else pkg[TCP].sport
         
 
-        if dst == self.server_addr and dport == self.server_port and sport == self.client_port and src == self.client_addr:
+        if dst == self.server_addr and dport == self.server_port:
             return 
         
-        if src == self.server_addr and sport == self.server_port and dport == self.client_port and dst == self.client_addr:
+        if src == self.server_addr and sport == self.server_port:
             return 
 
         self.conn.send(bytes(pkg))
