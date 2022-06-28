@@ -5,7 +5,7 @@ from scapy.all import *
 
 class SocketServer():
 
-    def __init__(self, listen_addr, listen_port, max_conn=1, threshold=100):
+    def __init__(self, listen_addr, listen_port, max_conn=10, threshold=100):
 
         # threading.Thread.__init__(self)
 

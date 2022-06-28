@@ -6,6 +6,7 @@ class FlowListener:
         self.conn = SocketClient(server_addr, server_port, name)
         self.server_addr = server_addr
         self.server_port = server_port
+        self.client_addr = self.conn.sock.getsockname()[0]
         self.client_port = self.conn.sock.getsockname()[1]
 
         if interfaces is None:
@@ -32,10 +33,10 @@ class FlowListener:
         sport = None if TCP not in pkg else pkg[TCP].sport
         
 
-        if dst == self.server_addr and dport == self.server_port and sport == self.client_port:
+        if dst == self.server_addr and dport == self.server_port and sport == self.client_port and src == self.client_addr:
             return 
         
-        if src == self.server_addr and sport == self.server_port and dport == self.client_port:
+        if src == self.server_addr and sport == self.server_port and dport == self.client_port and dst == self.client_addr:
             return 
 
         self.conn.send(bytes(pkg))
