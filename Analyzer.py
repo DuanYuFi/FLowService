@@ -54,7 +54,8 @@ class FlowAnalyzer(SocketServer):
 
             time.sleep(0.5)
     
-    def connect(self, ws: WebSocket):
+    async def connect(self, ws: WebSocket):
+        ws.accept()
         self.ws = ws
         print("Connected.")
 

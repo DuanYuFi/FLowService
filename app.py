@@ -11,7 +11,7 @@ flowAnalyzer.start()
 @app.websocket("/ws/v1/flow")
 async def flow_analyzer(websocket: WebSocket):
     
-    flowAnalyzer.connect(websocket)
+    await flowAnalyzer.connect(websocket)
     
     try:
         data = await websocket.receive_text()
@@ -26,4 +26,6 @@ if __name__ == "__main__":
     from config.common import SERVICE_HOST, SERVICE_PORT
 
     uvicorn.run(app, host=SERVICE_HOST, port=SERVICE_PORT)
+    flowAnalyzer.stop()
+    flowAnalyzer.join()
 
