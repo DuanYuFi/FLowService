@@ -38,7 +38,7 @@ class FlowAnalyzer(SocketServer):
                 wrpcap(filename, pkgs)
                 analyzer = PacketsAnalyzer(filename)
                 analyzer.analyze()
-                # remove(filename)
+                remove(filename)
 
                 report = analyzer.getReport()
                 filename = path.join(FLOW_RESULT_PATH, f"{tag}.txt")
@@ -143,10 +143,3 @@ class PacketsAnalyzer:
 
     def appendReport(self, reportList):
         self.recordList += reportList
-
-    def __del__(self):
-        try:
-            remove(self.pcapFilename)
-            pass
-        except OSError:
-            pass

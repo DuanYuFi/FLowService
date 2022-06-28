@@ -5,9 +5,7 @@ from scapy.all import *
 
 class SocketServer():
 
-    THRESHOLD = 100
-
-    def __init__(self, listen_addr, listen_port, max_conn=1):
+    def __init__(self, listen_addr, listen_port, max_conn=1, threshold=100):
 
         # threading.Thread.__init__(self)
 
@@ -20,6 +18,8 @@ class SocketServer():
 
         self.go = threading.Event()
         self.go.clear()
+
+        self.THRESHOLD = threshold
     
     def start(self):
 
