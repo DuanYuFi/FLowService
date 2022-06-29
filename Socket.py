@@ -58,8 +58,11 @@ class SocketServer(threading.Thread):
         if self.ws is None:
             return
 
-        pkg = Ether(data)
-        self.buffers[name].append(pkg)
+        try:
+            pkg = Ether(data)
+            self.buffers[name].append(pkg)
+        except:
+            return
 
     def handle_analyze(self, name):
         pass
