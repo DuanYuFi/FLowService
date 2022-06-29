@@ -57,7 +57,6 @@ class FlowAnalyzer(SocketServer):
                     asyncio.set_event_loop(self.event_loop)
                     asyncio.get_event_loop().run_until_complete(self.ws.send_json(report))
                 except Exception as e:
-                    e.with_traceback()
                     print(e)
 
             self.go.wait(0.5)

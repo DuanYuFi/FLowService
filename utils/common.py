@@ -59,7 +59,11 @@ def dispackHTTP(pkgs:PacketList):
         data = data.split(b'\r\n')
         dic = {}
 
-        dic["method"] = data[0].decode()
+        try:
+            dic["method"] = data[0].decode()
+        except:
+            print(data[0])
+            dic["method"] = "unknown"
         data = data[1:]
 
         try:
