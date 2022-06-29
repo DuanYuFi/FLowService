@@ -12,7 +12,7 @@ app = FastAPI()
 flowAnalyzer = FlowAnalyzer(LISTENING_HOST, LISTENING_PORT, threshold=PACKAGE_GROUP_NUM)
 flowAnalyzer.start()
 
-@app.websocket("/ws/v1/flow")
+@app.websocket("/ws/v1/flow/")
 async def flow_analyzer(websocket: WebSocket):
     
     await flowAnalyzer.connect(websocket)
@@ -35,6 +35,9 @@ async def websocket_endpoint(websocket: WebSocket):
             await asyncio.sleep(5)
         except WebSocketDisconnect:
             websocket.close()
+        except Exception as e:
+            print(e)
+            websocket.close()
 
 @app.websocket("/ws/v1/honey/")
 async def websocket_endpoint(websocket: WebSocket):
@@ -45,6 +48,9 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(data)
             await asyncio.sleep(5)
         except WebSocketDisconnect:
+            websocket.close()
+        except Exception as e:
+            print(e)
             websocket.close()
 
 if __name__ == "__main__":
