@@ -201,7 +201,6 @@ def get_hids_warings():
                 "detail": detail
             }
         ] })
-    result = json.dumps(result)
     return result
 if __name__ == '__main__':
 

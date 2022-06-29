@@ -40,7 +40,7 @@ def get_honey_warnings():
         }]
        }
     )
-  result = json.dumps(result)
+  # result = json.dumps(result)
   return result
 
 

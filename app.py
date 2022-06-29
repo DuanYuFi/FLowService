@@ -31,8 +31,9 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         try:
             data = get_hids_warings()
-            await websocket.send_text(data)
-            await asyncio.sleep(5)
+            for each in data:
+                await websocket.send_json(each)
+                await asyncio.sleep(1)
         except WebSocketDisconnect:
             await websocket.close()
         except Exception as e:
@@ -45,8 +46,9 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         try:
             data = get_honey_warnings()
-            await websocket.send_text(data)
-            await asyncio.sleep(5)
+            for each in data:
+                await websocket.send_json(each)
+                await asyncio.sleep(1)
         except Exception as e:
             print(e)
             await websocket.close()
