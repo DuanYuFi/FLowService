@@ -47,8 +47,6 @@ async def websocket_endpoint(websocket: WebSocket):
             data = get_honey_warnings()
             await websocket.send_text(data)
             await asyncio.sleep(5)
-        except WebSocketDisconnect:
-            await websocket.close()
         except Exception as e:
             print(e)
             await websocket.close()
