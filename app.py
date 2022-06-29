@@ -1,7 +1,11 @@
+import asyncio
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 from Analyzer import FlowAnalyzer, get_ngrams
 from config.sniffer import LISTENING_PORT, LISTENING_HOST, PACKAGE_GROUP_NUM
+from utils.hids import get_hids_warings
+from utils.honey import get_honey_warnings
 
 app = FastAPI()
 
@@ -21,6 +25,27 @@ async def flow_analyzer(websocket: WebSocket):
     except WebSocketDisconnect:
         flowAnalyzer.disconnect()
 
+@app.websocket("/ws/v1/hid/")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        try:
+            data = get_hids_warings()
+            await websocket.send_text(data)
+            await asyncio.sleep(5)
+        except WebSocketDisconnect:
+            websocket.close()
+
+@app.websocket("/ws/v1/honey/")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        try:
+            data = get_honey_warnings()
+            await websocket.send_text(data)
+            await asyncio.sleep(5)
+        except WebSocketDisconnect:
+            websocket.close()
 
 if __name__ == "__main__":
     import uvicorn
