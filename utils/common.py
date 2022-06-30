@@ -62,7 +62,7 @@ def dispackHTTP(pkgs:PacketList):
         try:
             dic["method"] = data[0].decode()
         except:
-            print(data[0])
+            print("\nError when decoding method:", data[0], '\n')
             dic["method"] = "unknown"
         data = data[1:]
 
